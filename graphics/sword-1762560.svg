@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE svg  PUBLIC '-//W3C//DTD SVG 1.1//EN'  'http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd'>
+<svg width="95.44mm" height="297.55mm" clip-rule="evenodd" fill-rule="evenodd" image-rendering="optimizeQuality" shape-rendering="geometricPrecision" text-rendering="geometricPrecision" version="1.1" viewBox="0 0 9544 29755" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+ <defs>
+  <style type="text/css">
+    .fil1 {fill:#898989}
+    .fil3 {fill:#A75F4A}
+    .fil0 {fill:url(#g)}
+    .fil6 {fill:url(#h)}
+    .fil2 {fill:url(#a)}
+    .fil7 {fill:url(#i)}
+    .fil5 {fill:url(#j)}
+    .fil4 {fill:url(#k)}
+  </style>
+  <linearGradient id="g" x1="3927.6" x2="5616.4" y1="11070" y2="11070" gradientUnits="userSpaceOnUse">
+   <stop stop-color="#C5C6C6" offset="0"/>
+   <stop stop-color="#898989" offset="1"/>
+  </linearGradient>
+  <linearGradient id="h" x1="425.51" x2="9118.4" y1="22536" y2="22536" gradientUnits="userSpaceOnUse">
+   <stop stop-color="#623620" offset="0"/>
+   <stop stop-color="#CC9E20" offset=".12157"/>
+   <stop stop-color="#CF9A30" offset=".52157"/>
+   <stop stop-color="#572623" offset="1"/>
+  </linearGradient>
+  <linearGradient id="a" x1="4304.4" x2="5239.6" y1="25598" y2="25598" gradientUnits="userSpaceOnUse">
+   <stop stop-color="#623620" offset="0"/>
+   <stop stop-color="#CC9E20" offset=".12157"/>
+   <stop stop-color="#fff" offset=".23922"/>
+   <stop stop-color="#CF9A30" offset=".52157"/>
+   <stop stop-color="#662D29" offset="1"/>
+  </linearGradient>
+  <linearGradient id="i" x1="861.26" x2="8682.7" y1="22536" y2="22536" gradientUnits="userSpaceOnUse" xlink:href="#a">
+  </linearGradient>
+  <linearGradient id="j" x1="50%" x2="50%" y1="100%" xlink:href="#a">
+  </linearGradient>
+  <radialGradient id="k">
+   <stop stop-color="#FCCE15" offset="0"/>
+   <stop stop-color="#FCCE15" offset=".011765"/>
+   <stop stop-color="#C89A00" offset=".14902"/>
+   <stop stop-color="#FCCE15" offset=".23922"/>
+   <stop stop-color="#D29700" offset=".30196"/>
+   <stop stop-color="#D29700" offset=".45098"/>
+   <stop stop-color="#FFCB9A" offset=".56078"/>
+   <stop stop-color="#C89A00" offset=".61961"/>
+   <stop stop-color="#CF9A00" offset=".81961"/>
+   <stop stop-color="#FFCB9E" offset=".87059"/>
+   <stop stop-color="#D59700" offset=".98824"/>
+   <stop stop-color="#C89A00" offset="1"/>
+  </radialGradient>
+ </defs>
+   <path class="fil0" d="m4103 1831c5-675 446-1221 669-1831 223 610 663 1156 669 1831l175 20309h-1688l175-20309z"/>
+   <path class="fil1" d="m4536 2083c1-645 157-1166 236-1748 79 582 234 1103 236 1748l62 20057h-596l62-20057z"/>
+   <rect class="fil2" x="4304" y="23026" width="935" height="5143"/>
+   <circle class="fil3" cx="4772" cy="28829" r="926"/>
+   <circle class="fil4" cx="4772" cy="28829" r="871"/>
+   <rect class="fil5" x="4156" y="23345" width="1233" height="340" rx="271" ry="271"/>
+   <rect class="fil5" x="4156" y="25725" width="1233" height="340" rx="271" ry="271"/>
+   <rect class="fil5" x="4156" y="26066" width="1233" height="340" rx="271" ry="271"/>
+   <rect class="fil5" x="4156" y="24365" width="1233" height="340" rx="271" ry="271"/>
+   <rect class="fil5" x="4156" y="24705" width="1233" height="340" rx="271" ry="271"/>
+   <rect class="fil5" x="4156" y="27086" width="1233" height="340" rx="271" ry="271"/>
+   <rect class="fil5" x="4156" y="27426" width="1233" height="340" rx="271" ry="271"/>
+   <rect class="fil5" x="4156" y="23685" width="1233" height="340" rx="271" ry="271"/>
+   <rect class="fil5" x="4156" y="25385" width="1233" height="340" rx="271" ry="271"/>
+   <rect class="fil5" x="4156" y="26406" width="1233" height="340" rx="271" ry="271"/>
+   <rect class="fil5" x="4156" y="24025" width="1233" height="340" rx="271" ry="271"/>
+   <rect class="fil5" x="4156" y="25045" width="1233" height="340" rx="271" ry="271"/>
+   <rect class="fil5" x="4156" y="26746" width="1233" height="340" rx="271" ry="271"/>
+   <polygon class="fil6" points="426 22330 4772 21900 9118 22330 9118 22681 4805 23172 426 22681"/>
+   <polygon class="fil7" points="861 22351 4772 21963 8683 22351 8683 22666 4802 23108 861 22666"/>
+   <circle class="fil3" cx="460" cy="22536" r="460"/>
+   <circle class="fil3" cx="9084" cy="22536" r="460"/>
+   <circle class="fil4" cx="460" cy="22536" r="425"/>
+   <circle class="fil4" cx="9084" cy="22536" r="425"/>
+   <circle class="fil3" cx="4772" cy="22536" r="437"/>
+   <circle class="fil4" cx="4772" cy="22536" r="404"/>
+</svg>
