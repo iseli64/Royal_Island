@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.5" tiledversion="1.6.0" orientation="orthogonal" renderorder="right-down" width="12" height="9" tilewidth="128" tileheight="128" infinite="0" nextlayerid="8" nextobjectid="25">
+ <tileset firstgid="1" source="medieval_rts_pack-tiles2.tsx"/>
+ <tileset firstgid="59" source="buildings.tsx"/>
+ <layer id="1" name="ground" width="12" height="9">
+  <data encoding="csv">
+27,27,27,27,27,27,27,27,27,27,27,27,
+27,1,1,1,1,1,1,1,1,1,1,27,
+27,1,57,57,57,57,57,57,57,57,1,27,
+27,1,15,57,57,57,57,57,57,57,1,27,
+27,1,15,57,57,57,57,57,57,57,1,27,
+27,1,15,57,57,57,57,57,57,57,1,27,
+27,1,15,57,57,57,57,57,57,57,1,27,
+27,1,1,1,1,1,1,1,1,1,1,27,
+27,27,27,27,27,27,27,27,27,27,27,27
+</data>
+ </layer>
+ <layer id="2" name="roads" width="12" height="9">
+  <data encoding="csv">
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,22,9,11,9,9,11,9,9,9,24,0,
+0,8,38,10,23,22,12,11,24,22,23,0,
+0,8,22,25,8,8,0,26,9,10,37,0,
+0,8,8,26,37,8,0,26,23,8,40,0,
+0,8,36,10,24,26,9,37,26,10,25,0,
+0,8,22,10,23,36,11,24,36,37,8,0,
+0,36,12,37,39,38,12,9,9,9,37,0,
+0,0,0,0,0,0,0,0,0,0,0,0
+</data>
+ </layer>
+ <layer id="5" name="buildings" width="12" height="9">
+  <data encoding="csv">
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,59,0,
+0,0,64,0,0,0,0,0,61,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,60,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,63,0,0,0,0,
+0,0,0,0,68,62,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0
+</data>
+ </layer>
+ <objectgroup id="6" name="obstacle">
+  <object id="3" x="10" y="10" width="116" height="1140"/>
+  <object id="6" x="136" y="4" width="1406" height="122"/>
+  <object id="7" x="1412" y="138" width="122" height="1012"/>
+  <object id="9" x="128" y="1024" width="1276" height="122"/>
+ </objectgroup>
+ <objectgroup id="7" name="houses">
+  <object id="11" name="visitor" x="252" y="266" width="120" height="116"/>
+  <object id="13" name="aladdin" x="1042" y="278" width="90" height="86"/>
+  <object id="15" name="ariel" x="1280" y="128" width="126" height="126"/>
+  <object id="18" name="tiana" x="518" y="642" width="122" height="126"/>
+  <object id="22" name="pirate" x="642" y="896" width="124" height="124"/>
+  <object id="23" name="restaurant" x="898" y="826" width="126" height="66"/>
+  <object id="24" name="pirate_ship_outside" x="508" y="918" width="136" height="108"/>
+ </objectgroup>
+</map>
