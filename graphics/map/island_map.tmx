@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.5" tiledversion="1.6.0" orientation="orthogonal" renderorder="right-down" width="12" height="9" tilewidth="128" tileheight="128" infinite="0" nextlayerid="8" nextobjectid="25">
+<map version="1.5" tiledversion="1.6.0" orientation="orthogonal" renderorder="right-down" width="12" height="9" tilewidth="128" tileheight="128" infinite="0" nextlayerid="9" nextobjectid="32">
  <tileset firstgid="1" source="medieval_rts_pack-tiles2.tsx"/>
  <tileset firstgid="59" source="buildings.tsx"/>
  <layer id="1" name="ground" width="12" height="9">
@@ -32,7 +32,7 @@
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,59,0,
-0,0,64,0,0,0,0,0,61,0,0,0,
+0,0,0,0,0,0,0,0,61,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,60,0,0,0,0,0,0,0,
@@ -48,12 +48,20 @@
   <object id="9" x="128" y="1024" width="1276" height="122"/>
  </objectgroup>
  <objectgroup id="7" name="houses">
-  <object id="11" name="visitor" x="252" y="266" width="120" height="116"/>
   <object id="13" name="aladdin" x="1042" y="278" width="90" height="86"/>
   <object id="15" name="ariel" x="1280" y="128" width="126" height="126"/>
   <object id="18" name="tiana" x="518" y="642" width="122" height="126"/>
   <object id="22" name="pirate" x="642" y="896" width="124" height="124"/>
   <object id="23" name="restaurant" x="898" y="826" width="126" height="66"/>
   <object id="24" name="pirate_ship_outside" x="508" y="918" width="136" height="108"/>
+ </objectgroup>
+ <objectgroup id="8" name="zones">
+  <object id="25" name="ariel_zone" x="1284" y="520" width="122" height="508"/>
+  <object id="26" name="ariel_zone" x="1025" y="640" width="372" height="256"/>
+  <object id="27" name="pirate_zone" x="127" y="132" width="768" height="128"/>
+  <object id="28" name="pirate_zone" x="387" y="130" width="244" height="508"/>
+  <object id="29" name="aladdin_zone" x="131" y="388" width="250" height="508"/>
+  <object id="30" name="tiana_zone" x="1153" y="258" width="248" height="256"/>
+  <object id="31" name="tiana_zone" x="897" y="386" width="386" height="250"/>
  </objectgroup>
 </map>
