@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.5" tiledversion="1.6.0" orientation="orthogonal" renderorder="right-down" width="1" height="1" tilewidth="800" tileheight="600" infinite="0" nextlayerid="6" nextobjectid="4">
+<map version="1.5" tiledversion="1.6.0" orientation="orthogonal" renderorder="right-down" width="1" height="1" tilewidth="800" tileheight="600" infinite="0" nextlayerid="6" nextobjectid="9">
  <tileset firstgid="1" source="inside.tsx"/>
  <layer id="1" name="Tile Layer 1" width="1" height="1">
   <data encoding="csv">
@@ -7,13 +7,15 @@
 </data>
  </layer>
  <objectgroup id="3" name="houses">
-  <object id="2" name="island_map" x="4" y="319" width="28" height="281"/>
+  <object id="2" name="island_map.tmx" x="4" y="319" width="28" height="281"/>
  </objectgroup>
- <objectgroup id="4" name="obstacles">
-  <object id="1" x="-15" y="318" width="817" height="280"/>
+ <objectgroup id="4" name="obstacle">
+  <object id="4" x="7" y="6" width="792" height="309"/>
+  <object id="5" x="1" y="577" width="795" height="21"/>
+  <object id="8" x="776" y="315" width="33" height="286"/>
  </objectgroup>
  <objectgroup id="5" name="hero_start_position">
-  <object id="3" name="start" x="125" y="482">
+  <object id="3" name="start" x="122" y="424">
    <point/>
   </object>
  </objectgroup>

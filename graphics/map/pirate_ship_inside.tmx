@@ -1,19 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.5" tiledversion="1.6.0" orientation="orthogonal" renderorder="right-down" width="1" height="1" tilewidth="800" tileheight="600" infinite="0" nextlayerid="6" nextobjectid="4">
+<map version="1.5" tiledversion="1.6.0" orientation="orthogonal" renderorder="right-down" width="1" height="1" tilewidth="800" tileheight="600" infinite="0" nextlayerid="6" nextobjectid="8">
  <tileset firstgid="1" source="inside.tsx"/>
  <layer id="1" name="Background" width="1" height="1">
   <data encoding="csv">
 7
 </data>
  </layer>
- <objectgroup id="3" name="obstacles">
-  <object id="1" x="2.32198" y="410.217" width="797.988" height="177.245"/>
+ <objectgroup id="3" name="obstacle">
+  <object id="5" x="9.28793" y="10.0619" width="791.022" height="395.511"/>
+  <object id="6" x="10.8359" y="582.043" width="784.83" height="20.8978"/>
+  <object id="7" x="779.412" y="408.669" width="17.0279" height="194.272"/>
  </objectgroup>
  <objectgroup id="4" name="houses">
-  <object id="2" name="island_map" x="-1.54799" y="410.991" width="36.3777" height="171.053"/>
+  <object id="2" name="island_map.tmx" x="-1.54799" y="410.991" width="36.3777" height="171.053"/>
  </objectgroup>
  <objectgroup id="5" name="hero_start_position">
-  <object id="3" x="95.9752" y="515.48">
+  <object id="3" x="100.619" y="448.143">
    <point/>
   </object>
  </objectgroup>

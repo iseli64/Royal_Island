@@ -48,12 +48,12 @@
   <object id="9" x="128" y="1024" width="1276" height="122"/>
  </objectgroup>
  <objectgroup id="7" name="houses">
-  <object id="13" name="aladdin" x="1042" y="278" width="90" height="86"/>
-  <object id="15" name="ariel" x="1280" y="128" width="126" height="126"/>
-  <object id="18" name="tiana" x="518" y="642" width="122" height="126"/>
-  <object id="22" name="pirate" x="642" y="896" width="124" height="124"/>
-  <object id="23" name="restaurant" x="898" y="826" width="126" height="66"/>
-  <object id="24" name="pirate_ship_outside" x="508" y="918" width="136" height="108"/>
+  <object id="13" name="aladdin_house.tmx" x="1042" y="278" width="90" height="86"/>
+  <object id="15" name="ariel_house.tmx" x="1280" y="128" width="126" height="126"/>
+  <object id="18" name="tiana_house.tmx" x="518" y="642" width="122" height="126"/>
+  <object id="22" name="pirate_house.tmx" x="642" y="896" width="124" height="124"/>
+  <object id="23" name="restaurant.tmx" x="900" y="828" width="126" height="66"/>
+  <object id="24" name="pirate_ship_inside.tmx" x="508" y="918" width="136" height="108"/>
  </objectgroup>
  <objectgroup id="8" name="zones">
   <object id="25" name="ariel_zone" x="1284" y="520" width="122" height="508"/>

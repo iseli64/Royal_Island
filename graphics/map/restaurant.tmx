@@ -1,19 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.5" tiledversion="1.6.0" orientation="orthogonal" renderorder="right-down" width="1" height="1" tilewidth="800" tileheight="600" infinite="0" nextlayerid="6" nextobjectid="5">
+<map version="1.5" tiledversion="1.6.0" orientation="orthogonal" renderorder="right-down" width="1" height="1" tilewidth="800" tileheight="600" infinite="0" nextlayerid="6" nextobjectid="8">
  <tileset firstgid="1" source="inside.tsx"/>
  <layer id="1" name="Tile Layer 1" width="1" height="1">
   <data encoding="csv">
 5
 </data>
  </layer>
- <objectgroup id="3" name="obstacles">
-  <object id="1" x="0" y="315" width="801" height="288"/>
+ <objectgroup id="3" name="obstacle">
+  <object id="5" x="7" y="10" width="789" height="309"/>
+  <object id="6" x="11" y="572" width="787" height="27"/>
+  <object id="7" x="771" y="329" width="25" height="270"/>
  </objectgroup>
  <objectgroup id="4" name="houses">
-  <object id="3" name="island_map" x="5" y="318" width="35" height="279"/>
+  <object id="3" name="island_map.tmx" x="5" y="318" width="35" height="279"/>
  </objectgroup>
  <objectgroup id="5" name="hero_start_position">
-  <object id="4" name="start" x="99" y="489">
+  <object id="4" name="start" x="102" y="390">
    <point/>
   </object>
  </objectgroup>
