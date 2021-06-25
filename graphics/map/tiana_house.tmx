@@ -12,7 +12,7 @@
  <objectgroup id="7" name="houses">
   <object id="5" name="island_map" x="0.666667" y="313.333" width="26" height="283.333"/>
  </objectgroup>
- <objectgroup id="8" name="start_position">
+ <objectgroup id="8" name="hero_start_position">
   <object id="6" name="start" x="113.333" y="477.333">
    <point/>
   </object>

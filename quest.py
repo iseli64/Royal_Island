@@ -107,8 +107,8 @@ class GameMap:
         self.houses_objs = []
         self.zones = []
         self.zones_objs = []
-
         self.characters = []
+        self.hero_start_position = None
 
         for layer in tmx_data.layers:
             if layer.name == 'obstacle':
@@ -122,6 +122,11 @@ class GameMap:
                 for obj in layer:
                     self.zones.append(pygame.Rect(obj.x, obj.y, obj.width, obj.height))
                     self.zones_objs.append(obj)
+            elif layer.name == 'hero_start_position':
+                for obj in layer:
+                    self.hero_start_position = (obj.x, obj.y)
+        
+        # houses are also exits
 
 
 
@@ -159,6 +164,21 @@ class GameMap:
             for character in self.characters:
                 self.group.add(character)
 
+    @property
+    def zoom(self):
+        return self.map_layer.zoom
+
+    @zoom.setter
+    def zoom (self, value: int):
+        self.map_layer.zoom = value
+
+    @property
+    def clamp_camera(self):
+        return self.map_data.clamp_camera
+
+    @clamp_camera.setter
+    def clamp_camera(self, value: bool):
+        self.map_layer.clamp_camera = value
 
     def add_characters(self, characters):
         for character in characters:
@@ -166,6 +186,8 @@ class GameMap:
             self.characters[-1]._position[0] = character['x']
             self.characters[-1]._position[1] = character['y']
     
+            self.group.add(self.characters[-1])
+
     def draw(self) -> None:
 
         # center the map/screen on our Hero
@@ -198,21 +220,28 @@ class GameMap:
                     character.velocity[1] = 0
 
 
-    def update(self, dt):
-            """Tasks that occur over time should be handled here"""
-            self.group.update(dt)
+    def update(self, dt, current_map) -> str:
+        
+        map_name = current_map
+        
+        """Tasks that occur over time should be handled here"""
+        self.group.update(dt)
 
-            # check if the sprite's feet are colliding with wall
-            # sprite must have a rect called feet, and move_back method,
-            # otherwise this will fail
-            for sprite in self.group.sprites():
-                if sprite.feet.collidelist(self.obstacles) > -1:
-                    sprite.move_back(dt)
-                
-                house_collision = sprite.feet.collidelist(self.houses)
+        # check if the sprite's feet are colliding with wall
+        # sprite must have a rect called feet, and move_back method,
+        # otherwise this will fail
+        for sprite in self.group.sprites():
+            if sprite.feet.collidelist(self.obstacles) > -1:
+                sprite.move_back(dt)
             
-                if house_collision > -1:
-                    print(self.houses_objs[house_collision].name)
+            house_collision = sprite.feet.collidelist(self.houses)
+        
+            if house_collision > -1 and sprite.name == "Player_00":
+                map_name = self.houses_objs[house_collision].name
+
+        return map_name        
+
+
 
 
 class QuestGame:
@@ -244,13 +273,15 @@ class QuestGame:
         self.maps = {}
         for map in maps:
             map_name = Path(map).name
-            self.maps[map_name] = GameMap(map_name, screen)
+            self.maps[map_name] = GameMap(map_name, screen, hero=Character())
 
             if map_name == 'island_map.tmx':
                 self.maps[map_name].add_characters(characters)
-                self.maps[map_name].hero = Character()
-                self.maps[map_name].hero._position[0] = 400
-                self.maps[map_name].hero._position[1] = 300
+            else:
+                self.maps[map_name].hero._position[0] = self.maps[map_name].hero_start_position[0]
+                self.maps[map_name].hero._position[1] = self.maps[map_name].hero_start_position[1]
+                self.maps[map_name].zoom = 1
+                self.maps[map_name].clamp_camera = True
 
             self.current_map = 'island_map.tmx'
 
@@ -319,7 +350,15 @@ class QuestGame:
 
                 self.handle_input()
                 self.maps[self.current_map].move_characters()
-                self.maps[self.current_map].update(dt)
+                
+                new_map = self.maps[self.current_map].update(dt, self.current_map)
+                if new_map != self.current_map:
+                    if self.maps[new_map].hero_start_position:
+                        self.maps[new_map].hero._position[0] = self.maps[new_map].hero_start_position[0]
+                        self.maps[new_map].hero._position[1] = self.maps[new_map].hero_start_position[1]
+                
+                    self.current_map = new_map
+                
                 self.maps[self.current_map].draw()
                 pygame.display.flip()
 
