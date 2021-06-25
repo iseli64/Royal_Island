@@ -48,12 +48,42 @@
   <object id="9" x="128" y="1024" width="1276" height="122"/>
  </objectgroup>
  <objectgroup id="7" name="houses">
-  <object id="13" name="aladdin_house.tmx" x="1042" y="278" width="90" height="86"/>
-  <object id="15" name="ariel_house.tmx" x="1280" y="128" width="126" height="126"/>
-  <object id="18" name="tiana_house.tmx" x="518" y="642" width="122" height="126"/>
-  <object id="22" name="pirate_house.tmx" x="642" y="896" width="124" height="124"/>
-  <object id="23" name="restaurant.tmx" x="900" y="828" width="126" height="66"/>
-  <object id="24" name="pirate_ship_inside.tmx" x="508" y="918" width="136" height="108"/>
+  <object id="13" name="aladdin_house.tmx" x="1042" y="278" width="90" height="86">
+   <properties>
+    <property name="exit_x" type="int" value="964"/>
+    <property name="exit_y" type="int" value="300"/>
+   </properties>
+  </object>
+  <object id="15" name="ariel_house.tmx" x="1280" y="128" width="126" height="126">
+   <properties>
+    <property name="exit_x" type="int" value="1200"/>
+    <property name="exit_y" type="int" value="170"/>
+   </properties>
+  </object>
+  <object id="18" name="tiana_house.tmx" x="518" y="642" width="122" height="126">
+   <properties>
+    <property name="exit_x" type="int" value="450"/>
+    <property name="exit_y" type="int" value="700"/>
+   </properties>
+  </object>
+  <object id="22" name="pirate_house.tmx" x="642" y="896" width="124" height="124">
+   <properties>
+    <property name="exit_x" type="int" value="696"/>
+    <property name="exit_y" type="int" value="760"/>
+   </properties>
+  </object>
+  <object id="23" name="restaurant.tmx" x="900" y="828" width="126" height="66">
+   <properties>
+    <property name="exit_x" type="int" value="826"/>
+    <property name="exit_y" type="int" value="810"/>
+   </properties>
+  </object>
+  <object id="24" name="pirate_ship_inside.tmx" x="508" y="918" width="136" height="108">
+   <properties>
+    <property name="exit_x" type="int" value="556"/>
+    <property name="exit_y" type="int" value="790"/>
+   </properties>
+  </object>
  </objectgroup>
  <objectgroup id="8" name="zones">
   <object id="25" name="ariel_zone" x="1284" y="520" width="122" height="508"/>

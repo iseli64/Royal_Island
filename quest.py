@@ -236,8 +236,11 @@ class GameMap:
             
             house_collision = sprite.feet.collidelist(self.houses)
         
-            if house_collision > -1 and sprite.name == "Player_00":
+            if house_collision > -1 and sprite.name == "player_00":
                 map_name = self.houses_objs[house_collision].name
+                if self.houses_objs[house_collision].properties:
+                    sprite._position[0] = self.houses_objs[house_collision].properties['exit_x']
+                    sprite._position[1] = self.houses_objs[house_collision].properties['exit_y']
 
         return map_name        
 
