@@ -199,25 +199,26 @@ class GameMap:
 
     def move_characters(self) -> None:
         for character in self.characters:
-            if random.randint(0, 100) < 70:
-                character.moving_direction = 0
-            else: 
-                character.moving_direction = random.choice([1, 2, 3, 4])
-            
-            if random.randint(0, 150) == 0:
-                if character.moving_direction == 4:
-                    character.velocity[0] = HERO_MOVE_SPEED
-                elif character.moving_direction == 3:
-                    character.velocity[0] = -HERO_MOVE_SPEED
-                else:
-                    character.velocity[0] =0
-
-                if character.moving_direction == 2:
-                    character.velocity[1] = HERO_MOVE_SPEED
-                elif character.moving_direction == 1:
-                    character.velocity[1] == -HERO_MOVE_SPEED
+            if not character.rect.colliderect(self.hero.rect):
+                if random.randint(0, 100) < 65:
+                    character.moving_direction = 0
                 else: 
-                    character.velocity[1] = 0
+                    character.moving_direction = random.choice([1, 2, 3, 4])
+                
+                if random.randint(0, 150) == 0:
+                    if character.moving_direction == 4:
+                        character.velocity[0] = HERO_MOVE_SPEED
+                    elif character.moving_direction == 3:
+                        character.velocity[0] = -HERO_MOVE_SPEED
+                    else:
+                        character.velocity[0] =0
+
+                    if character.moving_direction == 2:
+                        character.velocity[1] = HERO_MOVE_SPEED
+                    elif character.moving_direction == 1:
+                        character.velocity[1] = -HERO_MOVE_SPEED
+                    else: 
+                        character.velocity[1] = 0
 
 
     def update(self, dt, current_map) -> str:
@@ -231,8 +232,14 @@ class GameMap:
         # sprite must have a rect called feet, and move_back method,
         # otherwise this will fail
         for sprite in self.group.sprites():
+
             if sprite.feet.collidelist(self.obstacles) > -1:
                 sprite.move_back(dt)
+            
+            zone_collision = sprite.feet.collidelist(self.zones)
+            if zone_collision > -1 and not sprite.name == 'player_00':
+                sprite.move_back(dt)
+            
             
             house_collision = sprite.feet.collidelist(self.houses)
         
@@ -265,10 +272,10 @@ class QuestGame:
 
         # Characters
         characters = [
-            {"name": "ariel_00", "x": 1335, "y": 600},
-            {"name": "aladdin_00", "x": 322, "y": 450},
-            {"name": "tiana_00", "x": 1208, "y": 328},
-            {"name": "pirategirl_00", "x": 834, "y": 954},
+            {"name": "ariel_00", "x": 1315, "y": 600},
+            {"name": "aladdin_00", "x": 295, "y": 450},
+            {"name": "tiana_00", "x": 1304, "y": 298},
+            {"name": "pirategirl_00", "x": 141, "y": 70},
         ]
 
         #maps
