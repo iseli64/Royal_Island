@@ -14,7 +14,7 @@ from pathlib import Path
 from typing import List
 
 import pygame
-from pygame.locals import K_UP, K_DOWN, K_LEFT, K_RIGHT, K_MINUS, K_EQUALS, K_ESCAPE
+from pygame.locals import K_UP, K_DOWN, K_LEFT, K_RIGHT, K_MINUS, K_EQUALS, K_ESCAPE, K_SPACE
 from pygame.locals import KEYDOWN, VIDEORESIZE, QUIT
 from pytmx.util_pygame import load_pygame
 
@@ -71,6 +71,38 @@ class Character(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.feet = pygame.Rect(0, 0, self.rect.width * 0.5, 8)
 
+        self._talking = False
+        self._talkingwho = None
+        self._dialogs = {}
+
+    @property
+    def talking(self) -> bool:
+        return self._talking
+    
+    @talking.setter
+    def talking(self, value: bool) -> None:
+        self._talking = value
+    
+    @property
+    def talkingwho(self) -> bool:
+        return self._talkingwho
+    
+    @talkingwho.setter
+    def talkingwho(self, value: bool) -> None:
+        self._talkingwho = value
+
+    @property
+    def dialogs(self) -> str:
+        return self._dialogs
+
+    @dialogs.setter
+    def dialogs(self, key: str, value: str) -> None:
+        self._dialogs[key] = value
+
+    @dialogs.setter
+    def dialogs(self, value: dict) -> None:
+        self._dialogs = value
+
     @property
     def position(self) -> List[float]:
         return list(self._position)
@@ -109,6 +141,16 @@ class GameMap:
         self.zones_objs = []
         self.characters = []
         self.hero_start_position = None
+
+        self._dialog = None
+
+        @property
+        def dialog(self) -> str:
+            return self._dialog
+
+        @dialog.setter
+        def dialog(self, value) -> None:
+            self._dialog = value
 
         for layer in tmx_data.layers:
             if layer.name == 'obstacle':
@@ -185,6 +227,7 @@ class GameMap:
             self.characters.append(Character(name=character['name']))
             self.characters[-1]._position[0] = character['x']
             self.characters[-1]._position[1] = character['y']
+            self.characters[-1].dialogs = character['dialogs']
     
             self.group.add(self.characters[-1])
 
@@ -196,6 +239,22 @@ class GameMap:
 
     # draw the map and all sprites
         self.group.draw(self.screen)
+
+        if self._dialog:
+            dialog = self.text_speech('Script', 30, self._dialog, (255,255,255), (0,0,0), 800/2, 400/2, False)
+            self.screen.blit(dialog[0], dialog[1])
+
+    def text_speech(self, font: str, size: int, text: str, color, background, x, y, bold: bool):
+        font = pygame.font.SysFont(font, size)
+        font.set_bold(bold)
+        textSurf = font.render(text, True, color).convert_alpha()
+        textSize = textSurf.get_size()   
+        bubbleSurf = pygame.Surface((textSize[0]*2., textSize[1]*2))
+        bubbleRect = bubbleSurf.get_rect()
+        bubbleSurf.fill(background)
+        bubbleSurf.blit(textSurf, textSurf.get_rect(center=bubbleRect.center))
+        bubbleRect.center = (x, y)
+        return (bubbleSurf, bubbleRect)
 
     def move_characters(self) -> None:
         for character in self.characters:
@@ -228,6 +287,8 @@ class GameMap:
         """Tasks that occur over time should be handled here"""
         self.group.update(dt)
 
+        dialog = None
+
         # check if the sprite's feet are colliding with wall
         # sprite must have a rect called feet, and move_back method,
         # otherwise this will fail
@@ -240,15 +301,27 @@ class GameMap:
             if zone_collision > -1 and not sprite.name == 'player_00':
                 sprite.move_back(dt)
             
+            if sprite.name == 'player_00':            
+                house_collision = sprite.feet.collidelist(self.houses)
             
-            house_collision = sprite.feet.collidelist(self.houses)
-        
-            if house_collision > -1 and sprite.name == "player_00":
-                map_name = self.houses_objs[house_collision].name
-                if self.houses_objs[house_collision].properties:
-                    sprite._position[0] = self.houses_objs[house_collision].properties['exit_x']
-                    sprite._position[1] = self.houses_objs[house_collision].properties['exit_y']
+                if house_collision > -1 and sprite.name == "player_00":
+                    map_name = self.houses_objs[house_collision].name
+                    if self.houses_objs[house_collision].properties:
+                        sprite._position[0] = self.houses_objs[house_collision].properties['exit_x']
+                        sprite._position[1] = self.houses_objs[house_collision].properties['exit_y']
+            else:
+                if self.hero.talking:
+                    if sprite.rect.colliderect(self.hero.rect):
+                        self.hero.talkingwho = sprite.name
+                        dialog = sprite.dialogs['1']
 
+        if self.hero.talking and dialog:
+            self._dialog = dialog
+        else:
+            self.hero.talking = False
+            self.hero.talkingwho = None
+
+        
         return map_name        
 
 
@@ -272,10 +345,57 @@ class QuestGame:
 
         # Characters
         characters = [
-            {"name": "ariel_00", "x": 1315, "y": 600},
-            {"name": "aladdin_00", "x": 295, "y": 450},
-            {"name": "tiana_00", "x": 1304, "y": 298},
-            {"name": "pirategirl_00", "x": 141, "y": 70},
+            {
+                "name": "ariel_00", 
+                "x": 1315, 
+                "y": 600,
+                "dialogs": {
+                    "1": "Hello, I have lost my fork. Can you find it for me?",
+                    "2": "Oh, you haven’t found my fork yet…",
+                    "3": "Thank you so much for finding my fork!",
+                    "4": "Oh, you look busy with other quests right now. Find me later... I might have a new quest for you.",
+                    "5": "Oh, you have already finished my quest. Maybe try finding a different character."
+                }
+                },
+            
+            {
+                "name": "aladdin_00", 
+                "x": 295, 
+                "y": 450,
+                "dialogs": {
+                    "1": "Hello, I have lost my magic lamp. Can you find it for me?",
+                    "2": "Oh, you haven’t found my magic lamp yet…",
+                    "3": "Thank you so much for finding my magic lamp!",
+                    "4": "Oh, you look busy with other quests right now. Find me later... I might have a new quest for you.",
+                    "5": "Oh, you have already finished my quest. Maybe try finding a different character."
+                }
+                },
+            
+            {
+                "name": "tiana_00", 
+                "x": 1304, 
+                "y": 298,
+                "dialogs": {
+                    "1": "Hello, I have lost my bread. Can you find it for me?",
+                    "2": "Oh, you haven’t found my bread yet…",
+                    "3": "Thank you so much for finding my bread!",
+                    "4": "Oh, you look busy with other quests right now. Find me later... I might have a new quest for you.",
+                    "5": "Oh, you have already finished my quest. Maybe try finding a different character."
+                }
+            },
+            
+            {
+                "name": "pirategirl_00", 
+                "x": 141, 
+                "y": 70,
+                "dialogs": {
+                    "1": "Hello, I have lost my gold piece. Can you find it for me?",
+                    "2": "Oh, you haven’t found my gold piece yet…",
+                    "3": "Thank you so much for finding my gold piece!",
+                    "4": "Oh, you look busy with other quests right now. Find me later... I might have a new quest for you.",
+                    "5": "Oh, you have already finished my quest. Maybe try finding a different character."
+                }
+            }
         ]
 
         #maps
@@ -318,6 +438,12 @@ class QuestGame:
                     value = self.maps[self.current_map].map_layer.zoom - 0.25
                     if value > 0:
                         self.maps[self.current_map].map_layer.zoom = value
+                
+                elif event.key == K_SPACE:
+                    self.maps[self.current_map].hero.talking = not self.maps[self.current_map].hero.talking
+                    if not self.maps[self.current_map].hero.talking:
+                        self.maps[self.current_map].hero.talkingwho = None
+                        self.maps[self.current_map]._dialog = None
 
             # this will be handled if the window is resized
             elif event.type == VIDEORESIZE:
