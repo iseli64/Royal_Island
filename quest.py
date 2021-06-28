@@ -39,7 +39,91 @@ def init_screen(width: int, height: int) -> pygame.Surface:
 
 # make loading images a little easier
 def load_image(filename: str) -> pygame.Surface:
+    print(str(RESOURCES_DIR / filename))
     return pygame.image.load(str(RESOURCES_DIR / filename))
+
+class Item (pygame.sprite.Sprite):
+
+    def __init__(self, name, graphic_file, x, y):
+        super().__init__()
+        self.name = name
+        self.image = load_image('sprites/items/' + graphic_file).convert_alpha()
+        self._position = [x, y]
+        self.rect = self.image.get_rect()
+     
+
+    @property
+    def name(self) -> str:
+        return self._name
+
+    @property
+    def visible(self) -> str:
+        return self._visible
+
+    @name.setter
+    def name(self, value: str) -> None:
+        self._name = value
+
+    @visible.setter
+    def visible(self, value : bool) -> None:
+        self._name = value
+
+class Quest ():
+
+    def __init__(self):
+        self._name = None
+        self._location = None
+        self._status = 0
+        self._item  = None
+
+    def __init__(self, name, location, item):
+        self._name = name
+        self._location = location
+        self._item = item
+        self._status = None
+        self._future_status = None
+    
+    @property
+    def future_status(self):
+        return self._future_status
+
+    @future_status.setter
+    def future_status(self, value: int) -> None:
+        self._future_status = value
+
+    @property
+    def name (self) -> str:
+        return self._name
+
+    @property
+    def location(self) -> str:
+        return self._location
+
+    @property
+    def item(self) -> str:
+        return self._item
+    
+    @property
+    def status(self) -> bool:
+        return self._status
+
+    @name.setter
+    def name(self, value: str) -> None:
+        self._name = value
+
+    @location.setter
+    def location(self, value: str) -> None:
+        self.location = value
+
+    @item.setter
+    def item(self, value: Item) -> None:
+        self._item = value
+
+    @status.setter
+    def status(self, value: int) -> None:
+        self._status = value
+
+
 
 
 class Character(pygame.sprite.Sprite):
@@ -74,6 +158,16 @@ class Character(pygame.sprite.Sprite):
         self._talking = False
         self._talkingwho = None
         self._dialogs = {}
+
+        self._quest = None
+
+    @property
+    def quest(self) -> str:
+        return self._quest
+
+    @quest.setter
+    def quest(self, value: Quest):
+        self._quest = value
 
     @property
     def talking(self) -> bool:
@@ -310,18 +404,30 @@ class GameMap:
                         sprite._position[0] = self.houses_objs[house_collision].properties['exit_x']
                         sprite._position[1] = self.houses_objs[house_collision].properties['exit_y']
             else:
-                if self.hero.talking:
+                if self.hero.talking and not dialog:
                     if sprite.rect.colliderect(self.hero.rect):
                         self.hero.talkingwho = sprite.name
-                        dialog = sprite.dialogs['1']
+
+                        quest_name = sprite.name + '_quest'
+
+                        if not self.hero.quest:
+                            dialog = sprite.dialogs['1']
+                            self.hero.quest = quest_name
+                            QuestGame.quests[self.hero.quest].future_status = 1
+                        else:
+                            if self.hero.quest == quest_name:
+                                if QuestGame.quests[self.hero.quest].status == 1:
+                                    dialog = sprite.dialogs['2']
+                            else:
+                                dialog = sprite.dialogs['4']
 
         if self.hero.talking and dialog:
             self._dialog = dialog
+            dialog = None
         else:
-            self.hero.talking = False
+            #self.hero.talking = False
             self.hero.talkingwho = None
 
-        
         return map_name        
 
 
@@ -336,6 +442,8 @@ class QuestGame:
     """
 
     map_path = RESOURCES_DIR.joinpath('map').joinpath('island_map.tmx')
+
+    quests = {}
 
     def __init__(self, screen: pygame.Surface) -> None:
         self.screen = screen
@@ -398,6 +506,11 @@ class QuestGame:
             }
         ]
 
+        QuestGame.quests['ariel_00_quest'] =  Quest('ariel_00_quest', 'restaurant.tmx', Item('fork', 'ariel_00.png', 650, 421))
+        QuestGame.quests['aladdin_00_quest'] = Quest('aladdin_00_quest', 'aladdin_house.tmx', Item('magic lamp', 'aladdin_00.png', 664, 223))
+        QuestGame.quests['tiana_00_quest'] = Quest('tiana_00_quest', 'tiana_house.tmx', Item('bread', 'tiana_00.png', 371, 355))
+        QuestGame.quests['pirategirl_00_quest'] = Quest('pirategirl_00_quest', 'pirate_ship_inside.tmx', Item('gold piece', 'pirategirl_00.png', 180, 280))
+        
         #maps
         maps = glob.glob('**/*.tmx', recursive=True)
         self.maps = {}
@@ -444,6 +557,7 @@ class QuestGame:
                     if not self.maps[self.current_map].hero.talking:
                         self.maps[self.current_map].hero.talkingwho = None
                         self.maps[self.current_map]._dialog = None
+                        QuestGame.quests[self.maps[self.current_map].hero.quest].status = QuestGame.quests[self.maps[self.current_map].hero.quest].future_status
 
             # this will be handled if the window is resized
             elif event.type == VIDEORESIZE:
