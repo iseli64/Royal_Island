@@ -14,6 +14,7 @@ from pathlib import Path
 from typing import List
 
 import pygame
+from pygame import sprite
 from pygame.locals import K_UP, K_DOWN, K_LEFT, K_RIGHT, K_MINUS, K_EQUALS, K_ESCAPE, K_SPACE
 from pygame.locals import KEYDOWN, VIDEORESIZE, QUIT
 from pytmx.util_pygame import load_pygame
@@ -67,6 +68,9 @@ class Item (pygame.sprite.Sprite):
     @visible.setter
     def visible(self, value : bool) -> None:
         self._name = value
+
+    def update(self, dt: float):
+        self.rect.topleft = self._position
 
 class Quest ():
 
@@ -144,6 +148,8 @@ class Character(pygame.sprite.Sprite):
     collides with level walls.
     """
 
+    quest = None
+
     def __init__(self, name="player_00") -> None:
         super().__init__()
         self.name = name
@@ -158,16 +164,6 @@ class Character(pygame.sprite.Sprite):
         self._talking = False
         self._talkingwho = None
         self._dialogs = {}
-
-        self._quest = None
-
-    @property
-    def quest(self) -> str:
-        return self._quest
-
-    @quest.setter
-    def quest(self, value: Quest):
-        self._quest = value
 
     @property
     def talking(self) -> bool:
@@ -316,6 +312,12 @@ class GameMap:
     def clamp_camera(self, value: bool):
         self.map_layer.clamp_camera = value
 
+    def get_sprites(self) -> List:
+        return [sprite for sprite in self.group]
+
+    def get_sprite_names(self) -> List:
+        return [sprite.name for sprite in self.group]
+
     def add_characters(self, characters):
         for character in characters:
             self.characters.append(Character(name=character['name']))
@@ -388,38 +390,47 @@ class GameMap:
         # otherwise this will fail
         for sprite in self.group.sprites():
 
-            if sprite.feet.collidelist(self.obstacles) > -1:
-                sprite.move_back(dt)
-            
-            zone_collision = sprite.feet.collidelist(self.zones)
-            if zone_collision > -1 and not sprite.name == 'player_00':
-                sprite.move_back(dt)
-            
-            if sprite.name == 'player_00':            
-                house_collision = sprite.feet.collidelist(self.houses)
-            
-                if house_collision > -1 and sprite.name == "player_00":
-                    map_name = self.houses_objs[house_collision].name
-                    if self.houses_objs[house_collision].properties:
-                        sprite._position[0] = self.houses_objs[house_collision].properties['exit_x']
-                        sprite._position[1] = self.houses_objs[house_collision].properties['exit_y']
-            else:
-                if self.hero.talking and not dialog:
-                    if sprite.rect.colliderect(self.hero.rect):
-                        self.hero.talkingwho = sprite.name
+            if hasattr(sprite, 'feet'): 
+                if sprite.feet.collidelist(self.obstacles) > -1:
+                    sprite.move_back(dt)
 
-                        quest_name = sprite.name + '_quest'
 
-                        if not self.hero.quest:
-                            dialog = sprite.dialogs['1']
-                            self.hero.quest = quest_name
-                            QuestGame.quests[self.hero.quest].future_status = 1
-                        else:
-                            if self.hero.quest == quest_name:
-                                if QuestGame.quests[self.hero.quest].status == 1:
-                                    dialog = sprite.dialogs['2']
+                zone_collision = sprite.feet.collidelist(self.zones)
+                if zone_collision > -1 and not sprite.name == 'player_00':
+                    sprite.move_back(dt)
+                
+                if sprite.name == 'player_00':            
+                    house_collision = sprite.feet.collidelist(self.houses)
+                
+                    if house_collision > -1 and sprite.name == "player_00":
+                        map_name = self.houses_objs[house_collision].name
+                        if self.houses_objs[house_collision].properties:
+                            sprite._position[0] = self.houses_objs[house_collision].properties['exit_x']
+                            sprite._position[1] = self.houses_objs[house_collision].properties['exit_y']
+                else:
+                    if self.hero.talking and not dialog:
+                        if sprite.rect.colliderect(self.hero.rect):
+                            self.hero.talkingwho = sprite.name
+
+                            quest_name = sprite.name + '_quest'
+
+                            if not Character.quest:
+                                dialog = sprite.dialogs['1']
+                                Character.quest = quest_name
+                                QuestGame.quests[Character.quest].future_status = 1
                             else:
-                                dialog = sprite.dialogs['4']
+                                if Character.quest == quest_name:
+                                    if QuestGame.quests[Character.quest].status == 1:
+                                        dialog = sprite.dialogs['2']
+                                else:
+                                    dialog = sprite.dialogs['4']
+
+            else:
+                if sprite.rect.colliderect(self.hero.rect):
+                    if Character.quest:
+                        if QuestGame.quests[Character.quest].status == 1:
+                            QuestGame.quests[Character.quest].future_status = 2
+                            QuestGame.quests[Character.quest].status = 2
 
         if self.hero.talking and dialog:
             self._dialog = dialog
@@ -609,6 +620,17 @@ class QuestGame:
                 
                     self.current_map = new_map
                 
+                current_quest = self.maps['island_map.tmx'].hero.quest
+                if current_quest:
+                    if QuestGame.quests[current_quest].status:
+                        if QuestGame.quests[current_quest].status == QuestGame.quests[current_quest].future_status:
+                            if QuestGame.quests[current_quest].status == 1:
+                                if not QuestGame.quests[current_quest].item.name in self.maps[QuestGame.quests[current_quest].location].get_sprite_names():
+                                    self.maps[QuestGame.quests[current_quest].location].group.add(QuestGame.quests[current_quest].item)
+                            else:
+                                if QuestGame.quests[current_quest].item.name in self.maps[QuestGame.quests[current_quest].location].get_sprite_names():
+                                    QuestGame.quests[current_quest].item.kill()
+
                 self.maps[self.current_map].draw()
                 pygame.display.flip()
 
