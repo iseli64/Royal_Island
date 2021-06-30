@@ -414,7 +414,7 @@ class GameMap:
 
                             quest_name = sprite.name + '_quest'
 
-                            if not Character.quest:
+                            if not Character.quest and not QuestGame.quests[quest_name].status:
                                 dialog = sprite.dialogs['1']
                                 Character.quest = quest_name
                                 QuestGame.quests[Character.quest].future_status = 1
@@ -422,8 +422,15 @@ class GameMap:
                                 if Character.quest == quest_name:
                                     if QuestGame.quests[Character.quest].status == 1:
                                         dialog = sprite.dialogs['2']
+                                    elif QuestGame.quests[Character.quest].status == 2:
+                                        dialog = sprite.dialogs['3']
+                                        QuestGame.quests[Character.quest].future_status = 3
+
                                 else:
-                                    dialog = sprite.dialogs['4']
+                                    if QuestGame.quests[quest_name].status == 3:
+                                        dialog = sprite. dialogs['5']
+                                    else:
+                                        dialog = sprite.dialogs['4']
 
             else:
                 if sprite.rect.colliderect(self.hero.rect):
@@ -508,19 +515,19 @@ class QuestGame:
                 "x": 141, 
                 "y": 70,
                 "dialogs": {
-                    "1": "Hello, I have lost my gold piece. Can you find it for me?",
-                    "2": "Oh, you haven’t found my gold piece yet…",
-                    "3": "Thank you so much for finding my gold piece!",
+                    "1": "Hello, I have lost my compass. Can you find it for me?",
+                    "2": "Oh, you haven’t found my compass yet…",
+                    "3": "Thank you so much for finding my compass!",
                     "4": "Oh, you look busy with other quests right now. Find me later... I might have a new quest for you.",
                     "5": "Oh, you have already finished my quest. Maybe try finding a different character."
                 }
             }
         ]
 
-        QuestGame.quests['ariel_00_quest'] =  Quest('ariel_00_quest', 'restaurant.tmx', Item('fork', 'ariel_00.png', 650, 421))
-        QuestGame.quests['aladdin_00_quest'] = Quest('aladdin_00_quest', 'aladdin_house.tmx', Item('magic lamp', 'aladdin_00.png', 664, 223))
+        QuestGame.quests['ariel_00_quest'] =  Quest('ariel_00_quest', 'restaurant.tmx', Item('fork', 'ariel_00.png', 550, 421))
+        QuestGame.quests['aladdin_00_quest'] = Quest('aladdin_00_quest', 'aladdin_house.tmx', Item('magiclamp', 'aladdin_00.png', 664, 223))
         QuestGame.quests['tiana_00_quest'] = Quest('tiana_00_quest', 'tiana_house.tmx', Item('bread', 'tiana_00.png', 371, 355))
-        QuestGame.quests['pirategirl_00_quest'] = Quest('pirategirl_00_quest', 'pirate_ship_inside.tmx', Item('gold piece', 'pirategirl_00.png', 180, 280))
+        QuestGame.quests['pirategirl_00_quest'] = Quest('pirategirl_00_quest', 'pirate_ship_inside.tmx', Item('compass', 'pirategirl_00.png', 180, 280))
         
         #maps
         maps = glob.glob('**/*.tmx', recursive=True)
@@ -568,8 +575,10 @@ class QuestGame:
                     if not self.maps[self.current_map].hero.talking:
                         self.maps[self.current_map].hero.talkingwho = None
                         self.maps[self.current_map]._dialog = None
-                        QuestGame.quests[self.maps[self.current_map].hero.quest].status = QuestGame.quests[self.maps[self.current_map].hero.quest].future_status
-
+                        if Character.quest:
+                            QuestGame.quests[Character.quest].status = QuestGame.quests[Character.quest].future_status
+                            if QuestGame.quests[Character.quest].status == 3:
+                                Character.quest = None
             # this will be handled if the window is resized
             elif event.type == VIDEORESIZE:
                 self.screen = init_screen(event.w, event.h)
