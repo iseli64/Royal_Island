@@ -337,18 +337,29 @@ class GameMap:
         self.group.draw(self.screen)
 
         if self._dialog:
-            dialog = self.text_speech('Script', 30, self._dialog, (255,255,255), (0,0,0), 800/2, 400/2, False)
+            dialog = self.text_speech('georgia', 30, self._dialog, (255,255,255), (0,0,0), 800/2, 400/2, False)
             self.screen.blit(dialog[0], dialog[1])
 
     def text_speech(self, font: str, size: int, text: str, color, background, x, y, bold: bool):
         font = pygame.font.SysFont(font, size)
         font.set_bold(bold)
-        textSurf = font.render(text, True, color).convert_alpha()
-        textSize = textSurf.get_size()   
-        bubbleSurf = pygame.Surface((textSize[0]*2., textSize[1]*2))
+
+        lines = text.splitlines()
+        text_surfaces = []
+        for i, line in enumerate(lines):
+            text_surfaces.append(font.render(line, True, color).convert_alpha())
+
+        # Compute the width and height required for the bubble surface
+        textWidth = max([surf.get_size()[0] for surf in text_surfaces])
+        textHeight = sum([surf.get_size()[1] for surf in text_surfaces])
+
+        padding_factor = 2
+        bubbleSurf = pygame.Surface((textWidth * padding_factor, textHeight * padding_factor))
         bubbleRect = bubbleSurf.get_rect()
         bubbleSurf.fill(background)
-        bubbleSurf.blit(textSurf, textSurf.get_rect(center=bubbleRect.center))
+        for j, text_surface in enumerate(text_surfaces):
+            bubbleSurf.blit(text_surface, text_surface.get_rect(centerx=bubbleRect.centerx, top=(textHeight / padding_factor) + (j * (textHeight / (i + 1)))))
+
         bubbleRect.center = (x, y)
         return (bubbleSurf, bubbleRect)
 
@@ -476,11 +487,11 @@ class QuestGame:
                 "x": 1315, 
                 "y": 600,
                 "dialogs": {
-                    "1": "Hello, I have lost my fork. Can you find it for me?",
+                    "1": "Hello, I have lost my fork. \n Can you find it for me?",
                     "2": "Oh, you haven’t found my fork yet…",
                     "3": "Thank you so much for finding my fork!",
-                    "4": "Oh, you look busy with other quests right now. Find me later... I might have a new quest for you.",
-                    "5": "Oh, you have already finished my quest. Maybe try finding a different character."
+                    "4": "Oh, you look busy with other \n quests right now. Find me later... \n I might have a new quest for you.",
+                    "5": "Oh, you have already finished my \n quest. Maybe try finding a different \n character."
                 }
                 },
             
@@ -489,11 +500,11 @@ class QuestGame:
                 "x": 295, 
                 "y": 450,
                 "dialogs": {
-                    "1": "Hello, I have lost my magic lamp. Can you find it for me?",
+                    "1": "Hello, I have lost my magic lamp. \n Can you find it for me?",
                     "2": "Oh, you haven’t found my magic lamp yet…",
                     "3": "Thank you so much for finding my magic lamp!",
-                    "4": "Oh, you look busy with other quests right now. Find me later... I might have a new quest for you.",
-                    "5": "Oh, you have already finished my quest. Maybe try finding a different character."
+                    "4": "Oh, you look busy with other \n quests right now. Find me later... \n I might have a new quest for you.",
+                    "5": "Oh, you have already finished my \n quest. Maybe try finding a different \n character."
                 }
                 },
             
@@ -502,11 +513,11 @@ class QuestGame:
                 "x": 1304, 
                 "y": 298,
                 "dialogs": {
-                    "1": "Hello, I have lost my bread. Can you find it for me?",
+                    "1": "Hello, I have lost my bread. \n Can you find it for me?",
                     "2": "Oh, you haven’t found my bread yet…",
                     "3": "Thank you so much for finding my bread!",
-                    "4": "Oh, you look busy with other quests right now. Find me later... I might have a new quest for you.",
-                    "5": "Oh, you have already finished my quest. Maybe try finding a different character."
+                    "4": "Oh, you look busy with other \n quests right now. Find me later... \n I might have a new quest for you.",
+                    "5": "Oh, you have already finished my \n quest. Maybe try finding a different \n character."
                 }
             },
             
@@ -515,17 +526,17 @@ class QuestGame:
                 "x": 141, 
                 "y": 70,
                 "dialogs": {
-                    "1": "Hello, I have lost my compass. Can you find it for me?",
+                    "1": "Hello, I have lost my compass. \n Can you find it for me?",
                     "2": "Oh, you haven’t found my compass yet…",
                     "3": "Thank you so much for finding my compass!",
-                    "4": "Oh, you look busy with other quests right now. Find me later... I might have a new quest for you.",
-                    "5": "Oh, you have already finished my quest. Maybe try finding a different character."
+                    "4": "Oh, you look busy with other \n quests right now. Find me later... \n I might have a new quest for you.",
+                    "5": "Oh, you have already finished my \n quest. Maybe try finding a different \n character."
                 }
             }
         ]
 
         QuestGame.quests['ariel_00_quest'] =  Quest('ariel_00_quest', 'restaurant.tmx', Item('fork', 'ariel_00.png', 550, 421))
-        QuestGame.quests['aladdin_00_quest'] = Quest('aladdin_00_quest', 'aladdin_house.tmx', Item('magiclamp', 'aladdin_00.png', 664, 223))
+        QuestGame.quests['aladdin_00_quest'] = Quest('aladdin_00_quest', 'aladdin_house.tmx', Item('magiclamp', 'aladdin_00.png', 564, 223))
         QuestGame.quests['tiana_00_quest'] = Quest('tiana_00_quest', 'tiana_house.tmx', Item('bread', 'tiana_00.png', 371, 355))
         QuestGame.quests['pirategirl_00_quest'] = Quest('pirategirl_00_quest', 'pirate_ship_inside.tmx', Item('compass', 'pirategirl_00.png', 180, 280))
         
