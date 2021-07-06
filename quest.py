@@ -25,6 +25,7 @@ from pyscroll.group import PyscrollGroup
 
 import random
 import glob
+import os
 
 # define configuration variables here
 CURRENT_DIR = Path(__file__).parent
@@ -661,8 +662,13 @@ class QuestGame:
 def main() -> None:
     pygame.init()
     pygame.font.init()
-    screen = init_screen(800, 600)
-    pygame.display.set_caption("Quest - An epic journey.")
+
+    if 'REPL_OWNER' in os.environ.keys():
+        screen = pygame.display.init_screen((0,0), pygame.FULLSCREEN)
+    else:
+        screen = init_screen(800, 600)
+
+    pygame.display.set_caption("Royal Island - An epic journey.")
 
     try:
         game = QuestGame(screen)
