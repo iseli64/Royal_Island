@@ -664,7 +664,7 @@ def main() -> None:
     pygame.font.init()
 
     if 'REPL_OWNER' in os.environ.keys():
-        screen = pygame.display.init_screen((0,0), pygame.FULLSCREEN)
+        screen = init_screen((0,0), pygame.FULLSCREEN)
     else:
         screen = init_screen(800, 600)
 
