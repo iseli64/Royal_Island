@@ -25,6 +25,7 @@ from pyscroll.group import PyscrollGroup
 
 import random
 import glob
+import os
 
 # define configuration variables here
 CURRENT_DIR = Path(__file__).parent
@@ -34,7 +35,11 @@ HERO_MOVE_SPEED = 200  # pixels per second
 
 # simple wrapper to keep the screen resizeable
 def init_screen(width: int, height: int) -> pygame.Surface:
-    screen = pygame.display.set_mode((width, height), pygame.RESIZABLE)
+    if 'REPL_ID' in os.environ.keys():
+        screen = pygame.display.set_mode((0,0), pygame.FULLSCREEN)
+    else:
+        screen = pygame.display.set_mode((width, height), pygame.RESIZABLE)
+
     return screen
 
 
